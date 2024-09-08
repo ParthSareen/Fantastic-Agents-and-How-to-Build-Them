@@ -1,6 +1,8 @@
 # Fantastic-Agents-and-How-to-Build-Them
 
-![Fantastic Agents and How to Build Them](image.webp)
+<p align="center">
+  <img src="image.webp" alt="Fantastic Agents and How to Build Them" width="300">
+</p>
 
 ## Description
 Dive into the elusive world of AI Agents and learn how to build them! There are so many frameworks, models, and practices to build them and the entire field is just getting started. In this workshop, we'll be building an agent to scrape and standardize data through a natural language interface.
