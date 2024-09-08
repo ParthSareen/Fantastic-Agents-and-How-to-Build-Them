@@ -26,7 +26,7 @@ print_result_node = FunctionNode(func=print_result)
 entry_node = FunctionNode(func=entry_func)
 
 # Setup decision node
-decision_node = DecisionNode()
+decision_node = DecisionNode(model='gpt-4-0125-preview', api_base=None)
 
 # Link nodes together
 entry_node.next_nodes = [decision_node] 
@@ -45,13 +45,18 @@ multiply_two_nums_node.next_nodes = [
 ]
 
 # Compile the nodes
-entry_node.compile()
+entry_node.compile(force_load=False)
 
 # Run the nodes
-entry_node.run(input="add the numbers 2 and 10")
+while True:
+    user_input = input("Enter your command (or 'quit' to exit): ")
+    if user_input.lower() == 'quit':
+        break
+    entry_node.run(input=user_input)
+
+# Commented out examples:
 # messages = [{"role": "user", "content": "add the numbers 2 and 3"}]
 # messages = [{"role": "user", "content": "multiply the numbers 2 and 3"}]
-# decision_node.run(messages=messages, model='gpt-3.5-turbo-0125')
 
 
 
