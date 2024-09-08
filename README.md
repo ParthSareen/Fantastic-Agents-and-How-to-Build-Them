@@ -9,7 +9,11 @@ Dive into the elusive world of AI Agents and learn how to build them! There are 
 
 ## Installation
 
+> Rye is not a necesary dependency but does make it **much** simpler. You can still create a virtual environment and install using the `requirements.lock` file
+
 This project uses [Rye](https://rye-up.com/) for dependency management. Follow these steps to set up the project:
+
+Instructions for installation on windows are on the Rye site
 
 1. Install Rye if you haven't already:
    ```
