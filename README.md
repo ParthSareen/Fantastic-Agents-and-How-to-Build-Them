@@ -22,7 +22,7 @@ Instructions for installation on windows are on the Rye site
 
 2. Clone the repository:
    ```
-   git clone https://github.com/your-username/fantastic-agents-and-how-to-build-them.git
+   git clone https://github.com/parthsareen/fantastic-agents-and-how-to-build-them.git
    cd fantastic-agents-and-how-to-build-them
    ```
 
@@ -71,7 +71,7 @@ Before the workshop, please make sure you complete the following items:
 | 10 min | What are Agents | Learn what AI agents are, their anatomy, and why they're powerful |
 | 10 min | Environment Setup | Learn how to setup and manage a Python environment for this project |
 | 15 min | Simple AI Agent | We'll learn the basics of DAGent and build a simple AI agent |
-| 30 min | Complex AI Agent | |
+| 30 min | Complex AI Agent | Build a complex AI Agent to process more data and interface with natural language | 
 
 ## Workshop Lead Contact
 Parth Sareen
