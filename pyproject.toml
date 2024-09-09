@@ -6,7 +6,7 @@ authors = [
     { name = "ParthSareen", email = "psareen@uwaterloo.ca" }
 ]
 dependencies = [
-    "dagent>=0.0.5",
+    "dagent>=0.0.6",
     "playwright>=1.46.0",
     "exa-py>=1.1.0",
 ]
