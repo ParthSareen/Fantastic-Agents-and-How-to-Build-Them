@@ -32,7 +32,7 @@ charset-normalizer==3.3.2
     # via requests
 click==8.1.7
     # via litellm
-dagent==0.0.5
+dagent==0.0.6
     # via fantastic-agents-and-how-to-build-them
 distro==1.9.0
     # via openai
