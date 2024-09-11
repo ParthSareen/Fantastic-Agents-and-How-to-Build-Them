@@ -1,50 +1,111 @@
 from dagent import DecisionNode, FunctionNode, call_llm
 from dataclasses import asdict
 from exa_py import Exa
-from playwright.sync_api import sync_playwright, Playwright
+from fantastic_agents_and_how_to_build_them.shared.browserbase import browserbase_runner
 import os
 import json
 
-def run_exa():
+def run_exa(prev_output):
     exa = Exa(api_key=os.environ["EXA_API_KEY"])
 
     result = exa.search_and_contents(
-    "betaworks",
-    type="neural",
-    use_autoprompt=True,
-    num_results=10,
-    text=True
+        prev_output,
+        type="neural",
+        use_autoprompt=True,
+        num_results=10,
+        text=True
     )
     
     response = asdict(result)
     return response 
 
-results = run_exa()
-
-print(json.dumps(results['results'][1], indent=2))
 
 
-def run(playwright: Playwright):
-    chromium = playwright.chromium
-    browser = chromium.connect_over_cdp('wss://connect.browserbase.com?apiKey='+ os.environ["BROWSERBASE_API_KEY"])
-    context = browser.contexts[0]
-    page = context.pages[0]
-    
-    # Navigate to a specific page
-    url = "https://www.betaworks.com/"
-    page.goto(url)
-    
-    # Wait for the content to load (adjust timeout as needed)
-    # page.wait_for_load_state("networkidle", timeout=10000)
-    
-    # Get the page content
-    content = page.content()
-    
-    print(f"Content from {url}:")
-    print(content + '\n')
-    data  = call_llm(model='gpt-4-0125-preview', messages=[{"role": "user", "content": "structure this website raw content into a json. I want the website name, headline if any, and anything else important in other fields: " + content}], response_format={'type': 'json_object'})
-    print('output', data + '\n')
+def structure_data(prev_output):
+    """
+    Structure the raw content from the Exa search results into a formatted JSON object.
 
-# with sync_playwright() as playwright:
-#     run(playwright)
+    This function takes the output from the Exa search (prev_output) and processes it
+    to create a structured JSON object. The structured data includes the website name
+    and a list of data points for each search result, containing the URL, headline,
+    and a brief description.
+
+    Args:
+        prev_output (dict): The raw output from the Exa search function.
+
+    Returns:
+        dict: A structured JSON object containing the formatted data.
+
+    Side Effects:
+        - Saves the structured data to a local file named 'structured_data.json'.
+        - Prints a confirmation message when the data is saved.
+
+    Note:
+        This function uses an LLM to process and structure the data, which may
+        introduce some variability in the output format and content.
+    """
+    data_format = {
+        "website": "Example Website",
+        "data": [
+            {
+                "url": "https://example.com",
+                "headline": "Example Headline",
+                "description": "Brief description of the content"
+            }
+        ]
+    }
+
+
+    data = call_llm(
+        model='gpt-4-0125-preview',
+        messages=[
+            {
+                "role": "user",
+                "content": f"""
+                Structure this website raw content into a JSON format matching this pattern:
+                {json.dumps(data_format, indent=2)}
+                
+                The JSON should include the website name, and for each result, include:
+                - URL
+                - Headline (if any)
+                - Brief description
+
+                Raw content to structure:
+                {str(prev_output)}
+                """
+            }
+        ],
+        response_format={'type': 'json_object'}
+    )
+
+    # Parse the JSON string into a Python dictionary
+    structured_data = json.loads(data)
+
+    # Save the structured data locally as a JSON file
+    with open('structured_data.json', 'w') as f:
+        json.dump(structured_data, f, indent=2)
+    
+    print("Structured data has been saved to 'structured_data.json'")
+    
+    return structured_data
+    
+
+def entry():
+    search_term = input("Either enter a search")
+    return search_term
+
+entry_node = FunctionNode(func=entry)
+decision1 = DecisionNode(messages=[{'role': 'user', 'content': 'Pick between the provided functions to run given the user input. exa node is for searching for things and browserbase node is for scraping websites.'}])
+run_exa_node = FunctionNode(func=run_exa)
+structure_data_node = FunctionNode(func=structure_data)
+broswerbase_node = FunctionNode(func=browserbase_runner)
+
+decision_filter = DecisionNode(messages=[{'role': 'user', 'content': 'if the user wants relevant sites scraped as well'}])
+
+entry_node.next_nodes = [decision1]
+decision1.next_nodes = [run_exa_node, broswerbase_node]
+
+run_exa_node.next_nodes = [structure_data_node]
+
+run_exa_node.compile(force_load=False)
 

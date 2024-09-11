@@ -1,7 +1,7 @@
 [project]
 name = "fantastic-agents-and-how-to-build-them"
 version = "0.1.0"
-description = "Add your description here"
+description = "Hack the North Workshop to Build AI Agents"
 authors = [
     { name = "ParthSareen", email = "psareen@uwaterloo.ca" }
 ]

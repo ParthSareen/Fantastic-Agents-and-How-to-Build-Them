@@ -41,6 +41,44 @@ This will create a virtual environment and install all the required dependencies
 Now you're ready to start working on the project!
 
 
+## API Key Setup
+
+To use this project, you'll need to set up an API key for one of the following services:
+
+### OpenAI API Key
+
+1. Sign up for an account at [OpenAI](https://openai.com/).
+2. Navigate to the [API keys page](https://platform.openai.com/account/api-keys).
+3. Create a new secret key.
+4. Set the API key as an environment variable:
+   ```
+   export OPENAI_API_KEY='your-api-key-here'
+   ```
+
+### Groq API Key
+
+1. Sign up for an account at [Groq](https://console.groq.com/).
+2. Navigate to the API keys section in your account settings.
+3. Generate a new API key.
+4. Set the API key as an environment variable:
+   ```
+   export GROQ_API_KEY='your-api-key-here'
+   ```
+
+### Ollama (Local Processing)
+
+If you prefer to run models locally:
+
+1. Install Ollama by following the instructions on the [Ollama website](https://ollama.ai/).
+2. Pull the desired model:
+   ```
+   ollama pull mistral 
+   ```
+3. No API key is required for Ollama, as it runs locally on your machine.
+
+Choose the option that best suits your needs and ensure you have the necessary API key or local setup before proceeding with the workshop.
+
+
 ## Example Solutions
 
 If you find yourself stuck or running short on time, you can refer to the finished versions of the examples:

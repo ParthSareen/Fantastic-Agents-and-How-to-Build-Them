@@ -4,7 +4,7 @@ from dagent import DecisionNode, FunctionNode
 # Define function to add two numbers
 def add_two_nums(a: int, b: int) -> int:
     # TODO: Implement addition logic
-    pass
+     return a + b
 
 # Define function to multiply two numbers
 def multiply_two_nums(a: int, b: int) -> int:
