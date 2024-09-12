@@ -1,3 +1,4 @@
+import logging
 from dagent import DecisionNode, FunctionNode, call_llm
 from dataclasses import asdict
 from exa_py import Exa
@@ -5,7 +6,13 @@ from fantastic_agents_and_how_to_build_them.shared.browserbase import browserbas
 import os
 import json
 
+logging.basicConfig(level=logging.DEBUG, 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    handlers=[logging.FileHandler('dagent_logs.log'), logging.StreamHandler()])
 def run_exa(prev_output):
+    '''
+    Prev output should be the only input to this function, and that is the search query
+    '''
     exa = Exa(api_key=os.environ["EXA_API_KEY"])
 
     result = exa.search_and_contents(
@@ -56,6 +63,7 @@ def structure_data(prev_output):
     }
 
 
+    logging.info(f"Structure data function called with prev_output: {prev_output}")
     data = call_llm(
         model='gpt-4-0125-preview',
         messages=[
@@ -77,12 +85,13 @@ def structure_data(prev_output):
         ],
         response_format={'type': 'json_object'}
     )
+    logging.info(f"Data from LLM: {data}")
 
     # Parse the JSON string into a Python dictionary
     structured_data = json.loads(data)
 
     # Save the structured data locally as a JSON file
-    with open('structured_data.json', 'w') as f:
+    with open('structured_data_exa.json', 'w') as f:
         json.dump(structured_data, f, indent=2)
     
     print("Structured data has been saved to 'structured_data.json'")
@@ -90,22 +99,62 @@ def structure_data(prev_output):
     return structured_data
     
 
-def entry():
-    search_term = input("Either enter a search")
-    return search_term
+def entry(user_input):
+    # There could be some mutation here or something to enhance a query
+    if 'scrape' in user_input.split():
+        user_input += ' Make sure to scraping occurs either after exa node or browserbase node'
+    return user_input 
 
+
+def print_final_output(prev_output):
+    print("Final output:", json.dumps(prev_output, indent=2))
+    summary = call_llm(
+        model='gpt-4-0125-preview',
+        messages=[
+            {
+                "role": "user",
+                "content": f"""
+                Summarize the following structured data into a concise overview:
+                {json.dumps(prev_output, indent=2)}
+                """
+            }
+        ],
+        response_format={'type': 'text'}
+    )
+    print("Summary of the data:", summary)
+    print("Data should be saved as well")
+
+# Node setup
 entry_node = FunctionNode(func=entry)
-decision1 = DecisionNode(messages=[{'role': 'user', 'content': 'Pick between the provided functions to run given the user input. exa node is for searching for things and browserbase node is for scraping websites.'}])
+
+entry_decision = DecisionNode(user_params={'messages': [{'role': 'user', 'content': 'Pick between the provided functions to run given the user input. exa node is for searching for things and browserbase node is for scraping websites. Do not use browserbase unless user specifies scraping a specific site'}]}, max_tool_calls=1)
+
 run_exa_node = FunctionNode(func=run_exa)
 structure_data_node = FunctionNode(func=structure_data)
 broswerbase_node = FunctionNode(func=browserbase_runner)
+# user_params={'messages': [{'role': 'user', 'content': 'Only scrape using browserbase if specified by user.'}]},
+decision_filter_node = DecisionNode(max_tool_calls=1)
 
-decision_filter = DecisionNode(messages=[{'role': 'user', 'content': 'if the user wants relevant sites scraped as well'}])
+print_final_output_node = FunctionNode(func=print_final_output)
 
-entry_node.next_nodes = [decision1]
-decision1.next_nodes = [run_exa_node, broswerbase_node]
 
-run_exa_node.next_nodes = [structure_data_node]
+# Linking
+entry_node.next_nodes = [entry_decision]
 
-run_exa_node.compile(force_load=False)
+entry_decision.next_nodes = [run_exa_node, broswerbase_node]
 
+run_exa_node.next_nodes = [structure_data_node] 
+
+# decision_filter_node.next_nodes = [structure_data_node, broswerbase_node]
+
+broswerbase_node.next_nodes = [print_final_output_node]
+structure_data_node.next_nodes = [print_final_output_node]
+
+
+entry_node.compile()
+
+while True:
+    user_input = input("Enter your command (or 'quit' to exit): ")
+    if user_input.lower() == 'quit':
+        break
+    entry_node.run(user_input=user_input)

@@ -1,0 +1,1 @@
+{"type": "function", "function": {"name": "run_exa", "description": "Executes a search with the Exa API using the previous output as the search query.", "parameters": {"type": "object", "properties": {"prev_output": {"type": "string", "description": "The search query to input into the Exa API search function."}}, "required": ["prev_output"]}}}

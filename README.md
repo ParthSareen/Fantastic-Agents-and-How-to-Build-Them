@@ -38,7 +38,6 @@ This will create a virtual environment and install all the required dependencies
    . .venv/bin/activate
    ```
 
-Now you're ready to start working on the project!
 
 
 ## API Key Setup
@@ -78,7 +77,7 @@ If you prefer to run models locally:
 
 Choose the option that best suits your needs and ensure you have the necessary API key or local setup before proceeding with the workshop.
 
-### Browserbase setup
+### Browserbase Setup
 To use Browserbase for web scraping and data processing, follow these steps:
 
 1. Visit [Browserbase](https://www.browserbase.com/) and sign up for an account.
@@ -88,6 +87,13 @@ To use Browserbase for web scraping and data processing, follow these steps:
    export BROWSERBASE_API_KEY='your-api-key-here'
    ```
 4. Use code `DEVTOOLS` for 1 free month - recommended if using browserbase for hackathon project.
+
+
+### (Optional) Tavily Setup
+- Setup [Tavily](https://tavily.com/) - A searching tool for agents
+- Not neccessary for workshop but recommend for projects!
+
+Now you're ready to start working on the project!
 
 
 ## DAGent Basics
@@ -102,7 +108,9 @@ If you find yourself stuck or running short on time, you can refer to the finish
 1. Simple AI Agent: [simple_example_finished.py](src/fantastic_agents_and_how_to_build_them/simple_example_finished.py)
 2. Complex AI Agent: [data_analysis_agent_finished.py](src/fantastic_agents_and_how_to_build_them/data_analysis_agent_finished.py)
 
-These files contain the complete implementations of the agents we'll be building during the workshop. While it's recommended to work through the exercises on your own, these resources are available if you need additional guidance or want to compare your solution.
+- These files contain the complete implementations of the agents we'll be building during the workshop. While it's recommended to work through the exercises on your own, these resources are available if you need additional guidance or want to compare your solution.
+
+- There may be issues with some code, you might run into weird errors - best way to debug is to look at the source code and comparing against example code.
 
 ## Learning Outcomes
 After this workshop, you will be able to:

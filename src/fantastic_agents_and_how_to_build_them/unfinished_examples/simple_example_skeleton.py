@@ -1,6 +1,10 @@
 # Import necessary modules from dagent
 from dagent import DecisionNode, FunctionNode
 
+# Can enable logging below to save logs to file
+# logging.basicConfig(level=logging.INFO, 
+                    # format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+                    # handlers=[logging.FileHandler('dagent_logs.log'), logging.StreamHandler()])
 # Define function to add two numbers
 def add_two_nums(a: int, b: int) -> int:
     # TODO: Implement addition logic

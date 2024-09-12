@@ -1,0 +1,19 @@
+{
+    "type": "function",
+    "function": {
+        "name": "structure_data",
+        "description": "Structure the raw content from the Exa search results into a formatted JSON object.",
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "prev_output": {
+                    "type": "object",
+                    "description": "The raw output from the Exa search function. Do a pass through if tool is selected"
+                }
+            },
+            "required": [
+                "prev_output"
+            ]
+        }
+    }
+}
