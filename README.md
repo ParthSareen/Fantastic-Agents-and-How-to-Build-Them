@@ -72,11 +72,27 @@ If you prefer to run models locally:
 1. Install Ollama by following the instructions on the [Ollama website](https://ollama.ai/).
 2. Pull the desired model:
    ```
-   ollama pull mistral 
+   ollama pull llama3.1
    ```
 3. No API key is required for Ollama, as it runs locally on your machine.
 
 Choose the option that best suits your needs and ensure you have the necessary API key or local setup before proceeding with the workshop.
+
+### Browserbase setup
+To use Browserbase for web scraping and data processing, follow these steps:
+
+1. Visit [Browserbase](https://www.browserbase.com/) and sign up for an account.
+2. Once logged in, navigate to the settings page to find your API key.
+3. Set the API key as an environment variable:
+   ```
+   export BROWSERBASE_API_KEY='your-api-key-here'
+   ```
+4. Use code `DEVTOOLS` for 1 free month - recommended if using browserbase for hackathon project.
+
+
+## DAGent Basics
+
+Source code and further reading: [DAGent GitHub repository](https://github.com/ParthSareen/DAGent/tree/main).
 
 
 ## Example Solutions
@@ -88,7 +104,6 @@ If you find yourself stuck or running short on time, you can refer to the finish
 
 These files contain the complete implementations of the agents we'll be building during the workshop. While it's recommended to work through the exercises on your own, these resources are available if you need additional guidance or want to compare your solution.
 
-
 ## Learning Outcomes
 After this workshop, you will be able to:
 - Conceptually understand the key components of AI Agents
@@ -98,10 +113,6 @@ After this workshop, you will be able to:
 ## Prerequisite Knowledge
 - Familiarity with Python
 - Using pip to manage dependencies
-
-## Pre-Workshop Checklist
-Before the workshop, please make sure you complete the following items:
-- Review the repository and download it: Fantastic Agents and How to Build Them
 
 ## Timeline
 | Time | Module | Description |
