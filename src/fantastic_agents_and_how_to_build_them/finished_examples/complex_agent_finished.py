@@ -106,7 +106,7 @@ def entry(user_input):
     return user_input 
 
 
-def print_final_output(prev_output):
+def summarize_final_output(prev_output):
     print("Final output:", json.dumps(prev_output, indent=2))
     summary = call_llm(
         model='gpt-4-0125-preview',
@@ -135,7 +135,7 @@ broswerbase_node = FunctionNode(func=browserbase_runner)
 # user_params={'messages': [{'role': 'user', 'content': 'Only scrape using browserbase if specified by user.'}]},
 decision_filter_node = DecisionNode(max_tool_calls=1)
 
-print_final_output_node = FunctionNode(func=print_final_output)
+summarize_final_output_node = FunctionNode(func=summarize_final_output)
 
 
 # Linking
@@ -147,8 +147,8 @@ run_exa_node.next_nodes = [structure_data_node]
 
 # decision_filter_node.next_nodes = [structure_data_node, broswerbase_node]
 
-broswerbase_node.next_nodes = [print_final_output_node]
-structure_data_node.next_nodes = [print_final_output_node]
+broswerbase_node.next_nodes = [summarize_final_output_node]
+structure_data_node.next_nodes = [summarize_final_output_node]
 
 
 entry_node.compile()
